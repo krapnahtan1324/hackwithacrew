@@ -4,6 +4,7 @@ import NavBar from './components/navbar/NavBar';
 import ViewPosts from './pages/ViewPosts';
 import AddPost from './pages/AddPost';
 import Home from './pages/Home';
+import SignUp from './pages/SignUp';
 import './App.css';
 
 class App extends Component {
@@ -16,6 +17,7 @@ class App extends Component {
             <Route path='/' element={ <Home/> }/>
             <Route path='/posts' element={ <ViewPosts/> }/>
             <Route path='/postform' element={ <AddPost/> }/>
+            <Route path='/signup' element={<SignUp/>}/>
           </Routes>
         </div>
       </div>
