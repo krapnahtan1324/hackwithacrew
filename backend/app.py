@@ -1,12 +1,14 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
+from flask_migrate import Migrate
 from datetime import datetime
 
 app = Flask(__name__)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
+migrate = Migrate(app, db)
 
 
 
@@ -25,8 +27,9 @@ class PostModel(db.Model):
     __tablename__ = "posts"
     id = db.Column(db.Integer, primary_key=True)
     mood = db.Column(db.String(128), nullable=False)
-    description = db.Column(db.String(128), nullable=False)
+    description = db.Column(db.String(255), nullable=False)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
+    slugs = db.Column(db.String)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'), nullable=False)
 
     def __repr__(self):
@@ -50,19 +53,21 @@ user_fields = {
 class User(Resource):
     @marshal_with(user_fields)
     def get(self, user_id):
-        result = UserModel.query.get(id=user_id)
+        result = UserModel.query.get(user_id)
         return result
 
     @marshal_with(user_fields)
-    def put(self, user_id):
+    def post(self):
         args = user_put_args.parse_args()
-        user = UserModel(id=user_id, name=args['name'], email=args['email'], password=args['password'])
+        user = UserModel(name=args['name'], email=args['email'], password=args['password'])
         db.session.add(user)
         db.session.commit()
         return user, 201
 
 
-api.add_resource(User, '/users/<int:user_id>')
+api.add_resource(User, '/users/', '/users/<int:user_id>')
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
