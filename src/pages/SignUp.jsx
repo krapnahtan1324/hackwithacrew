@@ -5,7 +5,8 @@ import { useTheme } from "@emotion/react";
 
 export default function SignUp() {
 
-    const [name, setName] = useState("");
+    const [firstName, setFirstName] = useState("");
+    const [lastName, setLastName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -13,7 +14,31 @@ export default function SignUp() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        // createUser();
+        createUser();
+    };
+
+    const createUser = () => {
+        fetch("http://127.0.0.1:5000/users/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password
+            }),
+        })
+            .then((res) => res.json())
+            .then(
+                (result) => {
+                    console.log(result)
+                },
+                (error) => {
+                    console.log(error)
+                }
+            );
     };
 
     return (
@@ -32,6 +57,8 @@ export default function SignUp() {
                                 fullWidth
                                 id="firstName"
                                 label="First Name"
+                                value={firstName}
+                                onChange={(e) => setFirstName(e.target.value)}
                                 autoFocus
                             />
                         </Grid>
@@ -42,6 +69,8 @@ export default function SignUp() {
                                 id="lastName"
                                 label="Last Name"
                                 name="lastName"
+                                value={lastName}
+                                onChange={(e) => setLastName(e.target.value)}
                                 autoComplete="family-name"
                             />
                         </Grid>
@@ -53,6 +82,8 @@ export default function SignUp() {
                                 label="Email Address"
                                 name="email"
                                 autoComplete="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
                             />
                         </Grid>
                         <Grid item xs={12}>
@@ -64,6 +95,8 @@ export default function SignUp() {
                                 type="password"
                                 id="password"
                                 autoComplete="new-password"
+                                value={password}
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                         </Grid>
                     </Grid>
