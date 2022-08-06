@@ -1,5 +1,5 @@
 import {React, Component } from 'react';
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import NavBar from './components/navbar/NavBar';
 import ViewPosts from './pages/ViewPosts';
 import AddPost from './pages/AddPost';
@@ -8,22 +8,16 @@ import './App.css';
 
 class App extends Component {
   render() {
-    let component
-    switch (window.location.pathname) {
-      case '/':
-        component = <Home/>
-        break
-      case '/posts':
-        component = <ViewPosts/>
-        break
-      case '/postform':
-        component = <AddPost/>
-        break
-    }
     return (
       <div className="App">
         <NavBar/>
-        {component}
+        <div className='container'>
+          <Routes>
+            <Route path='/' element={ <Home/> }/>
+            <Route path='/posts' element={ <ViewPosts/> }/>
+            <Route path='/postform' element={ <AddPost/> }/>
+          </Routes>
+        </div>
       </div>
     );
   }
