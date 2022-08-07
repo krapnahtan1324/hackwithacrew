@@ -3,8 +3,10 @@ from flask_restful import Resource, Api, reqparse, fields, marshal_with
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from datetime import datetime
+from flask_cors import CORS
 
 app = Flask(__name__)
+CORS(app)
 api = Api(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db = SQLAlchemy(app)
@@ -41,13 +43,15 @@ post_put_args = reqparse.RequestParser()
 post_put_args.add_argument("mood", type=str, help="Mood of the post")
 
 user_put_args = reqparse.RequestParser()
-user_put_args.add_argument('name', type=str, help='Name is required', required=True)
+user_put_args.add_argument('firstName', type=str, help='First name is required', required=True)
+user_put_args.add_argument('lastName', type=str, help='Last name is required', required=True)
 user_put_args.add_argument('email', type=str, help='Email is required', required=True)
 user_put_args.add_argument('password', type=str, help='Password is required', required=True)
 
 user_fields = {
     'id': fields.Integer,
-    'name': fields.String,
+    'first_name': fields.String,
+    'last_name': fields.String,
     'email': fields.String
 }
 
@@ -60,7 +64,7 @@ class User(Resource):
     @marshal_with(user_fields)
     def post(self):
         args = user_put_args.parse_args()
-        user = UserModel(name=args['name'], email=args['email'], password=args['password'])
+        user = UserModel(first_name=args['firstName'], last_name=args['lastName'],email=args['email'], password=args['password'])
         db.session.add(user)
         db.session.commit()
         return user, 201
