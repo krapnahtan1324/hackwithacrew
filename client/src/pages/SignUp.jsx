@@ -43,13 +43,15 @@ export default function SignUp() {
 
     return (
         <React.Fragment>
-            <Box>
+            <div className="su">
+            <Box sx={{display: "flex", justifyContent: "center"}}>
+            <div className="signup">
                 <Typography component="h1" variant="h5">
                     Sign up
                 </Typography>
                 <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 3 }}>
-                    <Grid container spacing={2}>
-                        <Grid item xs={12} sm={6}>
+                    <Grid container spacing={2} justifyContent="center">
+                        <Grid item xs={4}>
                             <TextField
                                 autoComplete="given-name"
                                 name="firstName"
@@ -62,7 +64,7 @@ export default function SignUp() {
                                 autoFocus
                             />
                         </Grid>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={4}>
                             <TextField
                                 required
                                 fullWidth
@@ -74,7 +76,7 @@ export default function SignUp() {
                                 autoComplete="family-name"
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={8}>
                             <TextField
                                 required
                                 fullWidth
@@ -86,7 +88,7 @@ export default function SignUp() {
                                 onChange={(e) => setEmail(e.target.value)}
                             />
                         </Grid>
-                        <Grid item xs={12}>
+                        <Grid item xs={8}>
                             <TextField
                                 required
                                 fullWidth
@@ -102,14 +104,15 @@ export default function SignUp() {
                     </Grid>
                     <Button
                         type="submit"
-                        fullWidth
                         variant="contained"
-                        sx={{ mt: 3, mb: 2 }}
+                        sx={{ mt: 3, mb: 2, width: 100}}
                     > 
                         Sign Up
                     </Button>
                 </Box>
+            </div>
             </Box>
+            </div>
         </React.Fragment >
 
     )
